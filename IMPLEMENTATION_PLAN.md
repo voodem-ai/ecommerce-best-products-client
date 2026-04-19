@@ -22,6 +22,7 @@ Build the orchestration layer that receives user prompts from the UI, connects t
 ## Phase 3: Request / Response Models ✅
 - [x] `models.py` – Pydantic models for `ChatRequest`, `ChatResponse`, `ProductItem`
 - [x] Structured product data in response
+- [x] Agent system instruction tuned for HTML Tabular output of Top 3 recommendations
 - [ ] Streaming response support (`StreamingResponse` + SSE)
 
 ## Phase 4: Gemini & Google Access Setup ✅

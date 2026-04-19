@@ -62,14 +62,18 @@ async def run_agent(user_prompt: str) -> str:
                 names=[t.name for t in tools_result.tools],
             )
 
-            # ---- Build the initial prompt --------------------------------
             system_instruction = (
                 "You are an expert shopping assistant. The user wants product "
                 "recommendations. Use the available tools to search across "
                 "Amazon, Flipkart, and Myntra. Always prioritise products that "
-                "are: (1) top-rated, (2) lowest price, (3) most buyers. "
-                "After gathering results, provide a clear, well-formatted "
-                "comparison with your recommendation."
+                "are: (1) top-rated, (2) lowest price, (3) most buyers.\n\n"
+                "CRITICAL REQUIREMENT: You MUST provide your final answer containing exactly the TOP 3 options "
+                "in an HTML tabular format. Use `<table class='styled-table'>` with `<thead>` and `<tbody>`. "
+                "The columns must be: Rank (1, 2, 3), Product Name, Price, Link (use `<a href='...'>Link</a>`), "
+                "and Reason (explain exactly why this was selected as top 1, 2, or 3 based on comparative metrics). "
+                "Do NOT use markdown tables; output raw HTML for the table. CRITICAL: Output the entire HTML table "
+                "as a single continuous string without ANY newline characters to prevent formatting breaks. "
+                "You may use regular markdown for text outside the table."
             )
 
             contents: list[types.Content] = [
