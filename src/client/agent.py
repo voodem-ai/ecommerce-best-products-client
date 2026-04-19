@@ -7,7 +7,7 @@ from typing import Any
 import structlog
 from google import genai
 from google.genai import types
-from mcp.client.streamable_http import streamablehttp_client
+from mcp.client.sse import sse_client
 from mcp.client.session import ClientSession
 
 from client.config import settings
@@ -36,8 +36,8 @@ async def run_agent(user_prompt: str) -> str:
         # Fallback to auto-discovery
         gemini = genai.Client()
 
-    async with streamablehttp_client(settings.MCP_SERVER_URL) as (read, write, _):
-        async with ClientSession(read, write) as session:
+    async with sse_client(settings.MCP_SERVER_URL) as streams:
+        async with ClientSession(streams[0], streams[1]) as session:
             await session.initialize()
 
             # ---- Discover tools from MCP server --------------------------

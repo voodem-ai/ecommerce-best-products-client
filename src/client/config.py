@@ -25,7 +25,7 @@ class Settings:
     GOOGLE_CLOUD_LOCATION: str = os.getenv("GOOGLE_CLOUD_LOCATION", "us-central1")
 
     # --- MCP Server ---
-    MCP_SERVER_URL: str = os.getenv("MCP_SERVER_URL", "http://localhost:8000/mcp")
+    MCP_SERVER_URL: str = os.getenv("MCP_SERVER_URL", "http://localhost:8000/mcp/sse")
 
     # --- Redis Cache ---
     REDIS_HOST: str = os.getenv("REDIS_HOST", "localhost")
