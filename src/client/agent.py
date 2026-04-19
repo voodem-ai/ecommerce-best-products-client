@@ -1,6 +1,7 @@
 """MCP Client Agent – connects to the MCP server, registers tools with Gemini,
 and runs an agentic tool-calling loop."""
 
+import asyncio
 import json
 from typing import Any
 
@@ -96,23 +97,34 @@ async def run_agent(user_prompt: str) -> str:
                 # Append the model's response (with tool-call requests)
                 contents.append(response.candidates[0].content)
 
-                # Execute each tool call on the MCP server
+                # Execute each tool call on the MCP server IN PARALLEL
                 tool_response_parts: list[types.Part] = []
-                for fc in response.function_calls:
+                
+                async def execute_tool(fc):
                     log.info("calling_tool", name=fc.name, args=fc.args)
-                    result = await session.call_tool(fc.name, arguments=fc.args or {})
-
-                    # Build function-response part
-                    tool_response_parts.append(
-                        types.Part(
+                    try:
+                        result = await session.call_tool(fc.name, arguments=fc.args or {})
+                        return types.Part(
                             function_response=types.FunctionResponse(
                                 name=fc.name,
                                 response={"result": _parse_content(result.content)},
                             )
                         )
-                    )
+                    except Exception as e:
+                        log.error("tool_execution_failed", name=fc.name, error=str(e))
+                        return types.Part(
+                            function_response=types.FunctionResponse(
+                                name=fc.name,
+                                response={"error": f"Failed to execute tool: {str(e)}"},
+                            )
+                        )
 
-                contents.append(types.Content(role="user", parts=tool_response_parts))
+                # Gather all tool executions concurrently
+                tool_response_parts = await asyncio.gather(
+                    *(execute_tool(fc) for fc in response.function_calls)
+                )
+
+                contents.append(types.Content(role="user", parts=list(tool_response_parts)))
 
             return "Max tool-calling rounds reached. Please try a simpler query."
 

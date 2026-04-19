@@ -37,7 +37,7 @@ Build the orchestration layer that receives user prompts from the UI, connects t
 - [ ] Conversation history / multi-turn support
 - [ ] Token usage tracking
 - [ ] Configurable system prompts
-- [ ] Parallel tool execution when possible
+- [x] Parallel tool execution using `asyncio.gather` for faster processing
 - [ ] Error handling for Gemini API failures (retry, fallback)
 - [ ] Timeout on MCP server connections
 
