@@ -3,29 +3,15 @@
 from contextlib import asynccontextmanager
 
 import structlog
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
 
 from client.agent import run_agent
 from client.cache import cache_get_recommendation, cache_set_recommendation, close_redis
 from client.config import settings
+from client.models import ChatRequest, ChatResponse
 
 log = structlog.get_logger()
-
-
-# ---------------------------------------------------------------------------
-# Request / Response schemas
-# ---------------------------------------------------------------------------
-
-class ChatRequest(BaseModel):
-    """Incoming user prompt."""
-    prompt: str
-
-
-class ChatResponse(BaseModel):
-    """Outgoing recommendation from Gemini."""
-    recommendation: str
 
 
 # ---------------------------------------------------------------------------
@@ -60,6 +46,7 @@ app.add_middleware(
 
 @app.get("/health")
 async def health():
+    """Liveness probe."""
     return {"status": "ok"}
 
 
@@ -72,10 +59,13 @@ async def recommend(request: ChatRequest):
     cached = await cache_get_recommendation(request.prompt)
     if cached:
         log.info("recommend_cache_hit")
-        return ChatResponse(recommendation=cached)
+        return ChatResponse(recommendation=cached, cached=True)
 
-    # Run the agentic loop
-    result = await run_agent(request.prompt)
+    try:
+        result = await run_agent(request.prompt)
+    except Exception as exc:
+        log.error("agent_error", error=str(exc))
+        raise HTTPException(status_code=502, detail=f"Agent error: {exc}") from exc
 
     # Cache the result
     await cache_set_recommendation(request.prompt, result)
