@@ -1,17 +1,25 @@
 [project]
-name = "clientnpx"
+name = "ecommerce-best-products-client"
 version = "0.1.0"
-description = ""
+description = "MCP Client that orchestrates Gemini + MCP Server for e-commerce product recommendations"
 authors = [
-    {name = "Your Name",email = "you@example.com"}
+    {name = "voodem-ai", email = "voodem-ai@example.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.12"
 dependencies = [
+    "mcp[cli]>=1.0.0",
+    "fastapi>=0.111.0",
+    "uvicorn[standard]>=0.30.0",
+    "pydantic>=2.8.0",
+    "redis>=5.0.0",
+    "google-genai>=1.0.0",
+    "httpx>=0.27.0",
+    "structlog>=24.0.0",
 ]
 
 [tool.poetry]
-packages = [{include = "clientnpx", from = "src"}]
+packages = [{include = "client", from = "src"}]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
