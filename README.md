@@ -74,7 +74,7 @@ docker run -p 8001:8001 --env-file .env mcp-client
 |---|---|---|---|
 | `GEMINI_API_KEY` | – | **Yes** | Google Gemini API key from [AI Studio](https://aistudio.google.com/apikey) |
 | `GEMINI_MODEL` | `gemini-2.5-flash` | No | Gemini model ID |
-| `MCP_SERVER_URL` | `http://localhost:8000/mcp` | No | MCP Server endpoint |
+| `MCP_SERVER_URL` | `http://localhost:8000/mcp/sse` | No | MCP Server endpoint |
 | `REDIS_HOST` | `localhost` | No | Redis hostname |
 | `REDIS_PORT` | `6379` | No | Redis port |
 | `REDIS_TTL` | `1800` | No | Response cache TTL (seconds) |

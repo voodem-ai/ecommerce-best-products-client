@@ -24,14 +24,14 @@ async def run_agent(user_prompt: str) -> str:
     4. Execute any tool calls on the server as the Gemini model calls them, 
        feed results back, and return the final answer.
     """
-    # Support both Google AI Studio (API Key) and Vertex AI (GCP)
-    if hasattr(settings, "GOOGLE_CLOUD_PROJECT") and settings.GOOGLE_CLOUD_PROJECT:
+    # Prioritize AI Studio (API Key) over Vertex AI (GCP)
+    if settings.GEMINI_API_KEY and settings.GEMINI_API_KEY != "your-gemini-api-key-here":
+        gemini = genai.Client(api_key=settings.GEMINI_API_KEY)
+    elif hasattr(settings, "GOOGLE_CLOUD_PROJECT") and settings.GOOGLE_CLOUD_PROJECT:
         location = getattr(settings, "GOOGLE_CLOUD_LOCATION", None)
         gemini = genai.Client(
             vertexai=True, project=settings.GOOGLE_CLOUD_PROJECT, location=location
         )
-    elif settings.GEMINI_API_KEY:
-        gemini = genai.Client(api_key=settings.GEMINI_API_KEY)
     else:
         # Fallback to auto-discovery
         gemini = genai.Client()

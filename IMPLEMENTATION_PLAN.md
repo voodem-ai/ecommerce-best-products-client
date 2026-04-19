@@ -15,7 +15,8 @@ Build the orchestration layer that receives user prompts from the UI, connects t
 ## Phase 2: Core Architecture ✅
 - [x] `config.py` – Environment-based settings with `.env` file support via python-dotenv
 - [x] `cache.py` – Prompt-level response caching with SHA-256 key hashing
-- [x] `agent.py` – Gemini agentic loop with MCP tool discovery and execution
+- [x] `agent.py` – Gemini agentic loop over standard `mcp.client.sse` Stream
+- [x] `agent.py` – Smart auto-fallback between AI Studio API Keys and Vertex AI Google credentials
 - [x] `main.py` – FastAPI app with `/recommend` endpoint and CORS
 
 ## Phase 3: Request / Response Models ✅
