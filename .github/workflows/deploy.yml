@@ -49,5 +49,7 @@ jobs:
 
     - name: Deploy to GKE
       run: |-
-        kubectl set image deployment/ecommerce-client client=$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA
-        kubectl rollout status deployment/ecommerce-client
+        helm upgrade --install ecommerce-client ./helm/ecommerce-client \
+          --set image.repository=$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE \
+          --set image.tag=$GITHUB_SHA \
+          --namespace default

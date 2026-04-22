@@ -61,6 +61,10 @@ Technical skills and competencies required to develop, maintain, and extend this
 - **Poetry in Docker** – Layer caching for dependencies
 - **Environment variable injection** – Secrets at runtime, not build time
 
+### Kubernetes & Deployment
+- **Helm** – Managing deployments using a centralized Helm chart (`helm/ecommerce-client/`)
+- **Internal Networking** – Using a `ClusterIP` service to restrict public internet access and force traffic through the UI reverse proxy.
+
 ### Docker Compose
 - **Service dependencies** – Correct startup ordering
 - **Environment files** – `.env` file loading in compose

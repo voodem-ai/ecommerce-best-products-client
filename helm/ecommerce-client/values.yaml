@@ -1,0 +1,24 @@
+replicaCount: 1
+
+image:
+  repository: REPLACE_ME_CLIENT_IMAGE
+  pullPolicy: IfNotPresent
+  tag: ""
+
+nameOverride: ""
+fullnameOverride: "ecommerce-client"
+
+service:
+  type: ClusterIP
+  port: 8001
+
+env:
+  MCP_SERVER_URL: "http://ecommerce-server.default.svc.cluster.local:8000/mcp/sse"
+
+secrets:
+  name: ecommerce-secrets
+
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}

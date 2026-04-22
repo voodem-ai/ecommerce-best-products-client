@@ -127,6 +127,7 @@ Client ──generate_content──▶ Gemini (with tool results)
 | Logging | structlog (structured JSON) |
 | Config | python-dotenv + environment variables |
 | Container | Docker (multi-stage) |
+| Deployment | Helm chart with internal ClusterIP Service |
 
 ---
 
@@ -220,6 +221,8 @@ src/client/
 ├── cache.py      # SHA-256 prompt-level Redis cache
 ├── models.py     # Pydantic request/response models
 └── agent.py      # Gemini agentic loop + parallel MCP tool execution
+helm/
+└── ecommerce-client/   # Helm chart deployment files
 ```
 
 ---

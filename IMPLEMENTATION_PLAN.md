@@ -59,7 +59,8 @@ Build the orchestration layer that receives user prompts from the React UI, conn
 ## Phase 9: Deployment ✅
 - [x] Shared `docker-compose.yml`
 - [x] Environment variable documentation in README
-- [ ] GitHub Actions CI skeleton
+- [x] GitHub Actions CI pipeline with Helm deployment (`helm/ecommerce-client/`)
+- [x] Internal Networking (ClusterIP) to secure the API
 
 ---
 
@@ -76,6 +77,8 @@ ecommerce-best-products-client/
 ├── tests/
 │   ├── __init__.py
 │   └── test_api.py
+├── helm/
+│   └── ecommerce-client/  ← Helm chart deployment files
 ├── .env                ← Local config (not committed)
 ├── .env.example        ← Template
 ├── SKILLS.md
